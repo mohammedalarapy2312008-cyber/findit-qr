@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#141B2D"/>
+      <stop offset="100%" stop-color="#23314A"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.34"/>
+      <stop offset="65%" stop-color="#F59E0B" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#19B5A5" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#19B5A5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#19B5A5"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.03"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E2E8F0"/>
+      <stop offset="50%" stop-color="#94A3B8"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#040914" flood-opacity="0.55"/>
+    </filter>
+    <pattern id="pat" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3" fill="#F59E0B" opacity="0.13"/></pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#pat)"/>
+  <circle cx="560" cy="170" r="270" fill="url(#glow1)"/>
+  <circle cx="240" cy="430" r="230" fill="url(#glow2)"/>
+  <ellipse cx="400" cy="495" rx="235" ry="26" fill="#030712" opacity="0.46"/>
+  <g filter="url(#softShadow)">
+    
+      <path d="M352 152 C352 106, 448 106, 448 152" fill="none" stroke="#F59E0B" stroke-width="16" stroke-linecap="round"/>
+      <rect x="248" y="154" width="304" height="320" rx="68" fill="#19B5A5" stroke="#FDE68A" stroke-width="4"/>
+      <rect x="282" y="200" width="236" height="106" rx="28" fill="#0F2940"/>
+      <polygon points="400,218 412,246 442,248 418,266 426,294 400,278 374,294 382,266 358,248 388,246" fill="#FBBF24"/>
+      <rect x="286" y="330" width="228" height="114" rx="26" fill="#F59E0B"/>
+      <rect x="322" y="356" width="156" height="16" rx="8" fill="#0B1320" opacity="0.25"/>
+      <rect x="218" y="282" width="32" height="112" rx="16" fill="#0F2940"/>
+      <rect x="550" y="282" width="32" height="112" rx="16" fill="#0F2940"/>
+    
+  </g>
+  <rect x="26" y="26" width="748" height="548" rx="26" fill="none" stroke="#F59E0B" stroke-opacity="0.16" stroke-width="1.5"/>
+</svg>

@@ -1,0 +1,58 @@
+{
+  "originals/ori-4bea887bf9edd787.png": {
+    "id": "originals/ori-4bea887bf9edd787.png",
+    "ownerUid": "usr-b941d9e1ab65ce12",
+    "folder": "originals",
+    "filename": "ori-4bea887bf9edd787.png",
+    "url": "/api/media/originals/ori-4bea887bf9edd787.png",
+    "mimeType": "image/png",
+    "sizeBytes": 68,
+    "visibility": "private",
+    "storageDriver": "local_persistent",
+    "originalName": "test-pixel.png",
+    "createdAt": "2026-11-24T03:55:04.739Z",
+    "updatedAt": "2026-11-24T03:55:04.739Z"
+  },
+  "originals/ori-ecf2b535320999f0.png": {
+    "id": "originals/ori-ecf2b535320999f0.png",
+    "ownerUid": "usr-727d6e324d4b186c",
+    "folder": "originals",
+    "filename": "ori-ecf2b535320999f0.png",
+    "url": "/api/media/originals/ori-ecf2b535320999f0.png",
+    "mimeType": "image/png",
+    "sizeBytes": 68,
+    "visibility": "private",
+    "storageDriver": "local_persistent",
+    "originalName": "test-pixel.png",
+    "createdAt": "2026-11-24T03:56:08.832Z",
+    "updatedAt": "2026-11-24T03:56:08.832Z"
+  },
+  "originals/ori-a97e7a5373b70b4d.png": {
+    "id": "originals/ori-a97e7a5373b70b4d.png",
+    "ownerUid": "usr-57703397e1380484",
+    "folder": "originals",
+    "filename": "ori-a97e7a5373b70b4d.png",
+    "url": "/api/media/originals/ori-a97e7a5373b70b4d.png",
+    "mimeType": "image/png",
+    "sizeBytes": 68,
+    "visibility": "private",
+    "storageDriver": "local_persistent",
+    "originalName": "test-pixel.png",
+    "createdAt": "2026-11-24T03:58:01.823Z",
+    "updatedAt": "2026-11-24T03:58:01.823Z"
+  },
+  "originals/ori-4cd1cb74e6b160a2.png": {
+    "id": "originals/ori-4cd1cb74e6b160a2.png",
+    "ownerUid": "usr-73983151e7286625",
+    "folder": "originals",
+    "filename": "ori-4cd1cb74e6b160a2.png",
+    "url": "/api/media/originals/ori-4cd1cb74e6b160a2.png",
+    "mimeType": "image/png",
+    "sizeBytes": 68,
+    "visibility": "private",
+    "storageDriver": "local_persistent",
+    "originalName": "test-pixel.png",
+    "createdAt": "2026-11-24T04:00:51.001Z",
+    "updatedAt": "2026-11-24T04:00:51.001Z"
+  }
+}

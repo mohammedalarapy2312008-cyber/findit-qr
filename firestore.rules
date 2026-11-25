@@ -1,0 +1,399 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net (Default Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global Hardened Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Blueprint Validator: UserProfile (/users/{userId})
+    function isValidUserProfile(data, userId) {
+      return data.keys().hasAll([
+        'uid',
+        'displayName',
+        'email',
+        'photoURL',
+        'country',
+        'preferredLanguage',
+        'plan',
+        'accountStatus',
+        'activeItemsCount',
+        'activeItemsLimit',
+        'lastQuotaItemId',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'uid',
+        'displayName',
+        'email',
+        'photoURL',
+        'country',
+        'preferredLanguage',
+        'plan',
+        'accountStatus',
+        'activeItemsCount',
+        'activeItemsLimit',
+        'lastQuotaItemId',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.uid is string && data.uid == userId && data.uid == request.auth.uid &&
+      data.displayName is string && data.displayName.size() >= 2 && data.displayName.size() <= 100 &&
+      data.email is string && data.email.size() >= 3 && data.email.size() <= 150 &&
+      data.photoURL is string && data.photoURL.size() >= 0 && data.photoURL.size() <= 500 &&
+      data.country is string && data.country.size() >= 2 && data.country.size() <= 80 &&
+      data.preferredLanguage is string && data.preferredLanguage in ['ar', 'en'] &&
+      data.plan is string && data.plan in ['Free', 'Plus', 'Business'] &&
+      data.accountStatus is string && data.accountStatus in ['active', 'suspended'] &&
+      data.activeItemsCount is int && data.activeItemsCount >= 0 && data.activeItemsCount <= data.activeItemsLimit &&
+      data.activeItemsLimit is int && data.activeItemsLimit >= 2 && data.activeItemsLimit <= 1000 &&
+      data.lastQuotaItemId is string && data.lastQuotaItemId.size() >= 0 && data.lastQuotaItemId.size() <= 128 &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    // Blueprint Validator: ContactMethods Map inside Item
+    function isValidContactMethods(cm) {
+      return cm is map &&
+        cm.keys().hasAll([
+          'showPhone',
+          'showWhatsapp',
+          'showEmail',
+          'showTelegram',
+          'anonymousRelayOnly',
+          'phone',
+          'whatsapp',
+          'email',
+          'telegram'
+        ]) &&
+        cm.keys().hasOnly([
+          'showPhone',
+          'showWhatsapp',
+          'showEmail',
+          'showTelegram',
+          'anonymousRelayOnly',
+          'phone',
+          'whatsapp',
+          'email',
+          'telegram'
+        ]) &&
+        cm.showPhone is bool &&
+        cm.showWhatsapp is bool &&
+        cm.showEmail is bool &&
+        cm.showTelegram is bool &&
+        cm.anonymousRelayOnly is bool &&
+        cm.phone is string && cm.phone.size() <= 40 &&
+        cm.whatsapp is string && cm.whatsapp.size() <= 40 &&
+        cm.email is string && cm.email.size() <= 150 &&
+        cm.telegram is string && cm.telegram.size() <= 80;
+    }
+
+    // Blueprint Validator: Item (/items/{itemId})
+    function isValidItem(data, itemId) {
+      return data.keys().hasAll([
+        'id',
+        'ownerUid',
+        'codeSerial',
+        'name',
+        'description',
+        'category',
+        'imageUrl',
+        'status',
+        'recoveryInstructions',
+        'contactMethods',
+        'city',
+        'designId',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id',
+        'ownerUid',
+        'codeSerial',
+        'name',
+        'description',
+        'category',
+        'imageUrl',
+        'status',
+        'recoveryInstructions',
+        'contactMethods',
+        'city',
+        'designId',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.id is string && data.id == itemId &&
+      data.ownerUid is string && data.ownerUid == request.auth.uid &&
+      data.codeSerial is string && data.codeSerial.size() >= 3 && data.codeSerial.size() <= 40 &&
+      data.name is string && data.name.size() >= 2 && data.name.size() <= 80 &&
+      data.description is string && data.description.size() >= 5 && data.description.size() <= 400 &&
+      data.category is string && data.category in ['electronics', 'bags', 'keys', 'documents', 'pets', 'vehicles', 'commercial'] &&
+      data.imageUrl is string && data.imageUrl.size() >= 0 && data.imageUrl.size() <= 500 &&
+      data.status is string && data.status in ['Active', 'Lost', 'Found', 'Recovered', 'Archived'] &&
+      data.recoveryInstructions is string && data.recoveryInstructions.size() >= 5 && data.recoveryInstructions.size() <= 400 &&
+      isValidContactMethods(data.contactMethods) &&
+      data.city is string && data.city.size() >= 1 && data.city.size() <= 80 &&
+      data.designId is string && data.designId.size() >= 1 && data.designId.size() <= 80 &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    // Blueprint Validator: ActivityLog (/users/{userId}/activities/{activityId})
+    function isValidActivityLog(data, userId, activityId) {
+      return data.keys().hasAll([
+        'id',
+        'ownerUid',
+        'actionType',
+        'itemId',
+        'itemName',
+        'details',
+        'createdAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id',
+        'ownerUid',
+        'actionType',
+        'itemId',
+        'itemName',
+        'details',
+        'createdAt'
+      ]) &&
+      data.id is string && data.id == activityId &&
+      data.ownerUid is string && data.ownerUid == userId && data.ownerUid == request.auth.uid &&
+      data.actionType is string && data.actionType in [
+        'item_created',
+        'item_updated',
+        'item_archived',
+        'item_reactivated',
+        'item_deleted',
+        'profile_updated'
+      ] &&
+      data.itemId is string && data.itemId.size() >= 0 && data.itemId.size() <= 128 &&
+      data.itemName is string && data.itemName.size() >= 1 && data.itemName.size() <= 100 &&
+      data.details is string && data.details.size() >= 2 && data.details.size() <= 300 &&
+      data.createdAt is timestamp;
+    }
+
+    // Atomic Quota Synchronization Helpers
+    function isItemBecomingActiveInBatch(userId, itemId) {
+      return isValidId(itemId) &&
+        (!exists(/databases/$(database)/documents/items/$(itemId)) ||
+          get(/databases/$(database)/documents/items/$(itemId)).data.status == 'Archived') &&
+        existsAfter(/databases/$(database)/documents/items/$(itemId)) &&
+        getAfter(/databases/$(database)/documents/items/$(itemId)).data.ownerUid == userId &&
+        getAfter(/databases/$(database)/documents/items/$(itemId)).data.status != 'Archived';
+    }
+
+    function isItemBecomingInactiveInBatch(userId, itemId) {
+      return isValidId(itemId) &&
+        exists(/databases/$(database)/documents/items/$(itemId)) &&
+        get(/databases/$(database)/documents/items/$(itemId)).data.ownerUid == userId &&
+        get(/databases/$(database)/documents/items/$(itemId)).data.status != 'Archived' &&
+        (!existsAfter(/databases/$(database)/documents/items/$(itemId)) ||
+          getAfter(/databases/$(database)/documents/items/$(itemId)).data.status == 'Archived');
+    }
+
+    function isUserQuotaIncrementedInBatch(userId, itemId) {
+      let userBefore = get(/databases/$(database)/documents/users/$(userId)).data;
+      let userAfter = getAfter(/databases/$(database)/documents/users/$(userId)).data;
+      return userAfter.activeItemsCount == userBefore.activeItemsCount + 1 &&
+        userAfter.activeItemsCount <= userAfter.activeItemsLimit &&
+        userAfter.lastQuotaItemId == itemId;
+    }
+
+    function isUserQuotaDecrementedInBatch(userId, itemId) {
+      let userBefore = get(/databases/$(database)/documents/users/$(userId)).data;
+      let userAfter = getAfter(/databases/$(database)/documents/users/$(userId)).data;
+      return userAfter.activeItemsCount == userBefore.activeItemsCount - 1 &&
+        userAfter.activeItemsCount >= 0 &&
+        userAfter.lastQuotaItemId == itemId;
+    }
+
+    // 1. User Profile Collection (/users/{userId})
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if isOwner(userId) && existing().uid == request.auth.uid;
+
+      allow create: if isOwner(userId) &&
+        isValidId(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().plan == 'Free' &&
+        incoming().accountStatus == 'active' &&
+        incoming().activeItemsCount == 0 &&
+        incoming().activeItemsLimit == 2 &&
+        incoming().lastQuotaItemId == '' &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+
+      allow update: if isOwner(userId) &&
+        isValidId(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().uid == existing().uid &&
+        incoming().plan == existing().plan &&
+        incoming().accountStatus == existing().accountStatus &&
+        incoming().activeItemsLimit == existing().activeItemsLimit &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time && (
+          // Action 1: Profile metadata edit (quota unchanged)
+          (
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'displayName',
+              'country',
+              'preferredLanguage',
+              'photoURL',
+              'email',
+              'updatedAt'
+            ]) &&
+            incoming().activeItemsCount == existing().activeItemsCount &&
+            incoming().lastQuotaItemId == existing().lastQuotaItemId
+          ) ||
+          // Action 2: Atomic quota increment (+1) when creating or reactivating an item
+          (
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'activeItemsCount',
+              'lastQuotaItemId',
+              'updatedAt'
+            ]) &&
+            incoming().activeItemsCount == existing().activeItemsCount + 1 &&
+            incoming().activeItemsCount <= existing().activeItemsLimit &&
+            isItemBecomingActiveInBatch(userId, incoming().lastQuotaItemId)
+          ) ||
+          // Action 3: Atomic quota decrement (-1) when archiving or deleting an active item
+          (
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'activeItemsCount',
+              'lastQuotaItemId',
+              'updatedAt'
+            ]) &&
+            incoming().activeItemsCount == existing().activeItemsCount - 1 &&
+            incoming().activeItemsCount >= 0 &&
+            isItemBecomingInactiveInBatch(userId, incoming().lastQuotaItemId)
+          )
+        );
+
+      allow delete: if false;
+
+      // 3. User Activity Logs Subcollection (/users/{userId}/activities/{activityId})
+      match /activities/{activityId} {
+        allow get: if isOwner(userId) &&
+          isValidId(userId) &&
+          isValidId(activityId) &&
+          exists(/databases/$(database)/documents/users/$(userId));
+
+        allow list: if isOwner(userId) &&
+          existing().ownerUid == request.auth.uid;
+
+        allow create: if isOwner(userId) &&
+          isValidId(userId) &&
+          isValidId(activityId) &&
+          isValidActivityLog(incoming(), userId, activityId) &&
+          incoming().createdAt == request.time &&
+          existsAfter(/databases/$(database)/documents/users/$(userId));
+
+        allow update: if false;
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(activityId);
+      }
+    }
+
+    // 2. Registered Items Collection (/items/{itemId})
+    match /items/{itemId} {
+      allow get: if isSignedIn() &&
+        isValidId(itemId) &&
+        existing().ownerUid == request.auth.uid;
+
+      allow list: if isSignedIn() &&
+        existing().ownerUid == request.auth.uid;
+
+      allow create: if isSignedIn() &&
+        isValidId(itemId) &&
+        isValidItem(incoming(), itemId) &&
+        incoming().status != 'Archived' &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        isUserQuotaIncrementedInBatch(request.auth.uid, itemId);
+
+      allow update: if isSignedIn() &&
+        isValidId(itemId) &&
+        isValidItem(incoming(), itemId) &&
+        existing().ownerUid == request.auth.uid &&
+        incoming().ownerUid == existing().ownerUid &&
+        incoming().id == existing().id &&
+        incoming().codeSerial == existing().codeSerial &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time && (
+          // Action 1: Edit item details or change status without crossing the Archived boundary
+          (
+            ((existing().status != 'Archived' && incoming().status != 'Archived') ||
+              (existing().status == 'Archived' && incoming().status == 'Archived')) &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'name',
+              'description',
+              'category',
+              'imageUrl',
+              'status',
+              'recoveryInstructions',
+              'contactMethods',
+              'city',
+              'designId',
+              'updatedAt'
+            ])
+          ) ||
+          // Action 2: Archive an active item (decrements user activeItemsCount by 1 in batch)
+          (
+            existing().status != 'Archived' &&
+            incoming().status == 'Archived' &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'status',
+              'updatedAt'
+            ]) &&
+            isUserQuotaDecrementedInBatch(request.auth.uid, itemId)
+          ) ||
+          // Action 3: Reactivate an archived item (increments user activeItemsCount by 1 in batch, checking limit)
+          (
+            existing().status == 'Archived' &&
+            incoming().status != 'Archived' &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'status',
+              'updatedAt'
+            ]) &&
+            isUserQuotaIncrementedInBatch(request.auth.uid, itemId)
+          )
+        );
+
+      allow delete: if isSignedIn() &&
+        isValidId(itemId) &&
+        existing().ownerUid == request.auth.uid && (
+          // Deleting an already-archived item requires no quota decrement
+          existing().status == 'Archived' ||
+          // Deleting a non-archived item MUST atomically decrement user activeItemsCount
+          (
+            existing().status != 'Archived' &&
+            isUserQuotaDecrementedInBatch(request.auth.uid, itemId)
+          )
+        );
+    }
+  }
+}

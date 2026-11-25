@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#141328"/>
+      <stop offset="100%" stop-color="#232044"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.34"/>
+      <stop offset="65%" stop-color="#A78BFA" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#A78BFA" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#19B5A5" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#19B5A5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#A78BFA"/>
+      <stop offset="100%" stop-color="#19B5A5"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.03"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E2E8F0"/>
+      <stop offset="50%" stop-color="#94A3B8"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#040914" flood-opacity="0.55"/>
+    </filter>
+    <pattern id="pat" width="32" height="32" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="32" stroke="#A78BFA" stroke-width="1" opacity="0.09"/></pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#pat)"/>
+  <circle cx="560" cy="170" r="270" fill="url(#glow1)"/>
+  <circle cx="240" cy="430" r="230" fill="url(#glow2)"/>
+  <ellipse cx="400" cy="495" rx="235" ry="26" fill="#030712" opacity="0.46"/>
+  <g filter="url(#softShadow)">
+    
+      <rect x="228" y="126" width="290" height="356" rx="24" fill="#1C2541" stroke="#A78BFA" stroke-width="4"/>
+      <rect x="228" y="126" width="46" height="356" rx="14" fill="url(#accentGrad)"/>
+      <rect x="304" y="182" width="176" height="58" rx="14" fill="#0B1320" stroke="#A78BFA" stroke-opacity="0.6" stroke-width="2.5"/>
+      <line x1="328" y1="205" x2="456" y2="205" stroke="#E2E8F0" stroke-width="6" stroke-linecap="round"/>
+      <line x1="328" y1="224" x2="416" y2="224" stroke="#19B5A5" stroke-width="5" stroke-linecap="round"/>
+      <rect x="462" y="126" width="20" height="356" fill="#0B1320" opacity="0.5"/>
+      <g transform="rotate(14 576 300)">
+        <rect x="558" y="154" width="28" height="270" rx="12" fill="url(#metal)"/>
+        <rect x="558" y="198" width="28" height="18" fill="#19B5A5"/>
+        <polygon points="558,424 586,424 572,458" fill="#A78BFA"/>
+      </g>
+    
+  </g>
+  <rect x="26" y="26" width="748" height="548" rx="26" fill="none" stroke="#A78BFA" stroke-opacity="0.16" stroke-width="1.5"/>
+</svg>

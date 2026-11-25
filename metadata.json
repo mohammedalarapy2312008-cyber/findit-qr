@@ -1,0 +1,6 @@
+{
+  "name": "FindIt QR — Scan. Connect. Return.",
+  "description": "Smart QR property protection and lost-and-found recovery SaaS platform for personal and commercial items.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

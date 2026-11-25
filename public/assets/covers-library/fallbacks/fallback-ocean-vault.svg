@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#061420"/>
+      <stop offset="100%" stop-color="#0D2938"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0F9D8E" stop-opacity="0.34"/>
+      <stop offset="65%" stop-color="#0F9D8E" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#0F9D8E" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#19B5A5" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#19B5A5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F9D8E"/>
+      <stop offset="100%" stop-color="#19B5A5"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.03"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E2E8F0"/>
+      <stop offset="50%" stop-color="#94A3B8"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#040914" flood-opacity="0.55"/>
+    </filter>
+    <pattern id="pat" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3" fill="#0F9D8E" opacity="0.13"/></pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#pat)"/>
+  <circle cx="560" cy="170" r="270" fill="url(#glow1)"/>
+  <circle cx="240" cy="430" r="230" fill="url(#glow2)"/>
+  <ellipse cx="400" cy="495" rx="235" ry="26" fill="#030712" opacity="0.46"/>
+  <g filter="url(#softShadow)">
+    
+      <rect x="218" y="144" width="364" height="312" rx="46" fill="#0F2134" stroke="#19B5A5" stroke-width="5"/>
+      <circle cx="400" cy="300" r="96" fill="#081523" stroke="url(#accentGrad)" stroke-width="14"/>
+      <circle cx="400" cy="300" r="34" fill="url(#accentGrad)"/>
+      <line x1="400" y1="204" x2="400" y2="252" stroke="#E2E8F0" stroke-width="8" stroke-linecap="round"/>
+      <line x1="400" y1="348" x2="400" y2="396" stroke="#E2E8F0" stroke-width="8" stroke-linecap="round"/>
+      <line x1="304" y1="300" x2="352" y2="300" stroke="#E2E8F0" stroke-width="8" stroke-linecap="round"/>
+      <line x1="448" y1="300" x2="496" y2="300" stroke="#E2E8F0" stroke-width="8" stroke-linecap="round"/>
+    
+  </g>
+  <rect x="26" y="26" width="748" height="548" rx="26" fill="none" stroke="#0F9D8E" stroke-opacity="0.16" stroke-width="1.5"/>
+</svg>

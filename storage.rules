@@ -1,0 +1,64 @@
+rules_version = '2';
+
+// FindIt QR — Hardened Firebase Cloud Storage Security Rules
+// Ready for deployment once Firebase Storage is activated by the project owner.
+// Note: Default Firebase Storage buckets (*.firebasestorage.app) require Blaze plan activation in Firebase Console.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isValidImageUpload() {
+      return request.resource != null
+        && request.resource.size > 0
+        && request.resource.size <= 5 * 1024 * 1024
+        && request.resource.contentType.matches('^image/(jpeg|png|webp)$');
+    }
+
+    // 1. Curated 40-Cover Internal Library (Public read-only, server/admin managed)
+    match /covers-library/{scope}/{fileName} {
+      allow read: if scope in ['items', 'groups', 'fallbacks'];
+      allow write: if false;
+    }
+
+    // 2. Public Item & Group Covers Explicitly Published by Owner
+    match /users/{uid}/covers/{fileName} {
+      allow read: if true;
+      allow create, update: if isOwner(uid) && isValidImageUpload();
+      allow delete: if isOwner(uid);
+    }
+
+    // 3. Public Profile Avatars
+    match /users/{uid}/avatars/{fileName} {
+      allow read: if true;
+      allow create, update: if isOwner(uid) && isValidImageUpload();
+      allow delete: if isOwner(uid);
+    }
+
+    // 4. Private Original Item Photos (Strictly Owner-Only Access)
+    match /users/{uid}/originals/{fileName} {
+      allow read: if isOwner(uid);
+      allow create, update: if isOwner(uid) && isValidImageUpload();
+      allow delete: if isOwner(uid);
+    }
+
+    // 5. Private Support Ticket Attachments (Strictly Owner-Only Access)
+    match /users/{uid}/tickets/{fileName} {
+      allow read: if isOwner(uid);
+      allow create, update: if isOwner(uid) && isValidImageUpload();
+      allow delete: if isOwner(uid);
+    }
+
+    // Default deny all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user account profile and quota tracker linked to Firebase Auth UID.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Authentication UID of the user.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Full display name of the user.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Primary email address associated with the user.",
+          "minLength": 3,
+          "maxLength": 150
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Optional URL reference for user profile image (never raw binary data).",
+          "minLength": 0,
+          "maxLength": 500
+        },
+        "country": {
+          "type": "string",
+          "description": "User country or region.",
+          "minLength": 2,
+          "maxLength": 80
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "description": "Preferred UI language code.",
+          "enum": ["ar", "en"],
+          "minLength": 2,
+          "maxLength": 5
+        },
+        "plan": {
+          "type": "string",
+          "description": "Subscription tier (defaults to Free).",
+          "enum": ["Free", "Plus", "Business"],
+          "minLength": 4,
+          "maxLength": 20
+        },
+        "accountStatus": {
+          "type": "string",
+          "description": "Account lifecycle status.",
+          "enum": ["active", "suspended"],
+          "minLength": 6,
+          "maxLength": 20
+        },
+        "activeItemsCount": {
+          "type": "integer",
+          "description": "Server-validated count of currently non-archived items owned by the user."
+        },
+        "activeItemsLimit": {
+          "type": "integer",
+          "description": "Maximum allowed non-archived items for the user plan (2 for Free)."
+        },
+        "lastQuotaItemId": {
+          "type": "string",
+          "description": "Item ID synchronized in the most recent atomic quota batch transaction.",
+          "minLength": 0,
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of account creation."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last profile or quota update."
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "email",
+        "photoURL",
+        "country",
+        "preferredLanguage",
+        "plan",
+        "accountStatus",
+        "activeItemsCount",
+        "activeItemsLimit",
+        "lastQuotaItemId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Item": {
+      "title": "Item",
+      "description": "Registered personal or commercial item owned by a specific Firebase UID.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique item identifier matching the document ID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the item owner.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "codeSerial": {
+          "type": "string",
+          "description": "Human-readable QR tag serial code.",
+          "minLength": 3,
+          "maxLength": 40
+        },
+        "name": {
+          "type": "string",
+          "description": "Name or title of the item.",
+          "minLength": 2,
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "description": "Physical description of the item.",
+          "minLength": 5,
+          "maxLength": 400
+        },
+        "category": {
+          "type": "string",
+          "description": "Category classification of the item.",
+          "enum": [
+            "electronics",
+            "bags",
+            "keys",
+            "documents",
+            "pets",
+            "vehicles",
+            "commercial"
+          ],
+          "minLength": 3,
+          "maxLength": 30
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Optional external/storage URL reference for the item image.",
+          "minLength": 0,
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "description": "Current item lifecycle status.",
+          "enum": ["Active", "Lost", "Found", "Recovered", "Archived"],
+          "minLength": 4,
+          "maxLength": 20
+        },
+        "recoveryInstructions": {
+          "type": "string",
+          "description": "Instructions for returning or recovering the item.",
+          "minLength": 5,
+          "maxLength": 400
+        },
+        "contactMethods": {
+          "type": "object",
+          "description": "Selected contact channels and owner contact values."
+        },
+        "city": {
+          "type": "string",
+          "description": "City or location associated with the item.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "designId": {
+          "type": "string",
+          "description": "Selected QR tag template design identifier.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of item registration."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last item modification."
+        }
+      },
+      "required": [
+        "id",
+        "ownerUid",
+        "codeSerial",
+        "name",
+        "description",
+        "category",
+        "imageUrl",
+        "status",
+        "recoveryInstructions",
+        "contactMethods",
+        "city",
+        "designId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "User-scoped audit log entry for item actions.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Activity document ID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "UID of the user who owns this activity log.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "actionType": {
+          "type": "string",
+          "description": "Type of item or account event.",
+          "enum": [
+            "item_created",
+            "item_updated",
+            "item_archived",
+            "item_reactivated",
+            "item_deleted",
+            "profile_updated"
+          ],
+          "minLength": 5,
+          "maxLength": 40
+        },
+        "itemId": {
+          "type": "string",
+          "description": "Associated item ID if applicable.",
+          "minLength": 0,
+          "maxLength": 128
+        },
+        "itemName": {
+          "type": "string",
+          "description": "Display name of the affected item.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "details": {
+          "type": "string",
+          "description": "Human-readable description of the event.",
+          "minLength": 2,
+          "maxLength": 300
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the activity."
+        }
+      },
+      "required": [
+        "id",
+        "ownerUid",
+        "actionType",
+        "itemId",
+        "itemName",
+        "details",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile and server-enforced plan quota state."
+    },
+    "/items/{itemId}": {
+      "schema": { "$ref": "#/entities/Item" },
+      "description": "User-owned registered items enforced by ownerUid and atomic quota rules."
+    },
+    "/users/{userId}/activities/{activityId}": {
+      "schema": { "$ref": "#/entities/ActivityLog" },
+      "description": "Private chronological activity logs scoped to a specific user."
+    }
+  }
+}

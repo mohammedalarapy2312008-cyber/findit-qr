@@ -1,0 +1,117 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --brand-blue: #0F9D8E;
+    --brand-teal: #19B5A5;
+    --brand-teal-glow: #2DD4BF;
+    --brand-yellow: #FFD166;
+    --brand-coral: #FF8A65;
+    --brand-navy: #0B1320;
+    --brand-navy-mid: #132238;
+    --brand-bg-light: #F7FAFC;
+    --brand-surface-light: #FFFFFF;
+    --brand-border-light: #E2E8F0;
+    --brand-bg-dark: #070E1A;
+    --brand-surface-dark: #0E192B;
+    --brand-surface-elevated-dark: #14233A;
+    --brand-border-dark: rgba(148, 163, 184, 0.16);
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html[lang="ar"] body {
+    font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  html[lang="en"] body {
+    font-family: 'Plus Jakarta Sans', 'Cairo', system-ui, sans-serif;
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Signature Midnight Teal Architectural Grid */
+.findit-hero-grid {
+  background-image:
+    radial-gradient(circle at 18% 0%, rgba(25, 181, 165, 0.10), transparent 46%),
+    radial-gradient(rgba(15, 26, 43, 0.07) 1px, transparent 1px);
+  background-size: 100% 100%, 26px 26px;
+}
+
+.dark .findit-hero-grid {
+  background-image:
+    radial-gradient(circle at 18% 0%, rgba(25, 181, 165, 0.15), transparent 48%),
+    radial-gradient(rgba(45, 212, 191, 0.12) 1px, transparent 1px);
+  background-size: 100% 100%, 26px 26px;
+}
+
+/* Crisp Compositor-Friendly Card Hover */
+.findit-card-hover {
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.findit-card-hover:hover {
+  transform: translateY(-2px);
+}
+
+#findit-print-sheet-portal {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  body > *:not(#findit-print-sheet-portal) {
+    display: none !important;
+  }
+
+  #findit-print-sheet-portal {
+    display: block !important;
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .findit-print-page {
+    width: 100%;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .findit-print-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .findit-print-page > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
